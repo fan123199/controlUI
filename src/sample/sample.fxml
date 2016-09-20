@@ -9,10 +9,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<BorderPane  prefHeight="655.0" prefWidth="1163.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1"
-             fx:controller="sample.Controller">
+<BorderPane fx:id="root_layout" onKeyPressed="#onKey" prefHeight="655.0" prefWidth="1163.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <top>
       <MenuBar prefHeight="0.0" prefWidth="847.0" BorderPane.alignment="CENTER">
         <menus>
@@ -34,40 +33,37 @@
         </menus>
       </MenuBar>
    </top>
-   <bottom>
-      <HBox BorderPane.alignment="CENTER" />
-   </bottom>
    <center>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <TextField layoutY="30.0" />
-                  <TextField layoutX="-2.0" layoutY="124.0" />
-                  <TextField layoutY="219.0" />
-                  <Button layoutX="334.0" layoutY="30.0" mnemonicParsing="false" text="Extras" />
-                  <Button layoutX="331.0" layoutY="124.0" mnemonicParsing="false" text="Action" />
-                  <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="156.0" text="Catagory" />
-                  <Button layoutX="703.0" layoutY="219.0" mnemonicParsing="false" text="WIFI" />
-                  <ListView layoutX="481.0" layoutY="24.0" prefHeight="200.0" prefWidth="200.0" />
-                  <Button layoutX="749.0" layoutY="30.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="113.0" text="Head" />
-                  <Button fx:id="tv_volume_down" layoutX="703.0" layoutY="100.0" mnemonicParsing="false" onAction="#onHan" text="v down" />
-                  <Button layoutX="831.0" layoutY="100.0" mnemonicParsing="false" text="v up" />
-                  <Button layoutX="936.0" layoutY="86.0" mnemonicParsing="false" text="left" />
-                  <Button layoutX="1077.0" layoutY="86.0" mnemonicParsing="false" text="right" />
-                  <Button layoutX="997.0" layoutY="141.0" mnemonicParsing="false" text="down" />
-                  <Button layoutX="1006.0" layoutY="24.0" mnemonicParsing="false" text="up" />
-                  <Button layoutX="807.0" layoutY="224.0" mnemonicParsing="false" text="Photo" />
-                  <Button layoutX="946.0" layoutY="219.0" mnemonicParsing="false" text="Video" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <children>
-                  <Button layoutX="60.0" layoutY="26.0" mnemonicParsing="false" text="StartActivity" />
-                  <Button layoutX="42.0" layoutY="206.0" mnemonicParsing="false" text="SendbroadCast" />
-                  <Button layoutX="644.0" layoutY="26.0" mnemonicParsing="false" text="Forcestop" />
-               </children></AnchorPane>
-        </items>
-      </SplitPane>
+       <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <TextField editable="false" layoutY="30.0" />
+               <TextField editable="false" layoutX="-2.0" layoutY="124.0" />
+               <TextField layoutY="219.0" />
+               <Button layoutX="334.0" layoutY="30.0" mnemonicParsing="false" text="Extras" />
+               <Button layoutX="331.0" layoutY="124.0" mnemonicParsing="false" text="Action" />
+               <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="156.0" text="Catagory" />
+               <ListView layoutX="507.0" layoutY="24.0" prefHeight="173.0" prefWidth="174.0" />
+               <Pane layoutX="725.0" layoutY="20.0" prefHeight="238.0" prefWidth="149.0" style="-fx-background-color: #ccddeeff;">
+                   <Button fx:id="btn_head" layoutX="51.0" mnemonicParsing="false" onMouseClicked="#onHead" text="Head" />
+                   <Button fx:id="btn_volume_down" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onVolumeDown" prefHeight="34.0" prefWidth="63.0" text="vol -" />
+                   <Button fx:id="btn_volume_up" layoutX="75.0" layoutY="39.0" mnemonicParsing="false" onAction="#doLog" onMouseClicked="#onVolumeUp" prefHeight="34.0" prefWidth="61.0" text="vol +" />
+                   <Button fx:id="btn_wifi" layoutX="47.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#onWifi" text="WIFI" />
+                   <Button fx:id="btn_photo" layoutX="43.0" layoutY="128.0" mnemonicParsing="false" onMouseClicked="#onPhoto" text="Photo" />
+                   <Button fx:id="btn_video" layoutX="44.0" layoutY="172.0" mnemonicParsing="false" onMouseClicked="#onVideo" text="Video" />
+               </Pane>
+               <Pane layoutX="910.0" layoutY="64.0" style="-fx-background-color: #aa112233;">
+                   <Button fx:id="btn_left" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onLeft" text="left" />
+                   <Button fx:id="btn_right" layoutX="71.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onRight" text="right" />
+                   <Button fx:id="btn_down" layoutX="38.0" layoutY="72.0" mnemonicParsing="false" onMouseClicked="#onDown" text="down" />
+                   <Button fx:id="btn_up" layoutX="38.0" mnemonicParsing="false" onMouseClicked="#onUp" text="up" />
+                   <Button fx:id="btn_ok" layoutX="161.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#onOK" text="OK" />
+               </Pane>
+           </AnchorPane>
+           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <Button layoutX="60.0" layoutY="26.0" mnemonicParsing="false" text="StartActivity" />
+               <Button layoutX="181.0" layoutY="26.0" mnemonicParsing="false" text="SendbroadCast" />
+               <Button layoutX="296.0" layoutY="26.0" mnemonicParsing="false" text="Forcestop" />
+           </AnchorPane>
+       </SplitPane>
    </center>
 </BorderPane>
