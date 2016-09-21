@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -36,7 +37,6 @@
    <center>
        <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <TextField editable="false" layoutY="30.0" />
                <TextField editable="false" layoutX="-2.0" layoutY="124.0" />
                <TextField layoutY="219.0" />
                <Button layoutX="334.0" layoutY="30.0" mnemonicParsing="false" text="Extras" />
@@ -58,11 +58,15 @@
                    <Button fx:id="btn_up" layoutX="38.0" mnemonicParsing="false" onMouseClicked="#onUp" text="up" />
                    <Button fx:id="btn_ok" layoutX="161.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#onOK" text="OK" />
                </Pane>
+            <Button layoutX="553.0" layoutY="219.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <Button layoutX="60.0" layoutY="26.0" mnemonicParsing="false" text="StartActivity" />
                <Button layoutX="181.0" layoutY="26.0" mnemonicParsing="false" text="SendbroadCast" />
                <Button layoutX="296.0" layoutY="26.0" mnemonicParsing="false" text="Forcestop" />
+               <TextArea fx:id="tf_log" editable="false" layoutX="373.0" layoutY="18.0" />
+            <Button fx:id="btn_push_app" layoutX="858.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
+            <Button fx:id="btn_remove" layoutX="863.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
            </AnchorPane>
        </SplitPane>
    </center>

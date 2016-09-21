@@ -3,13 +3,14 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import static javafx.scene.input.KeyCode.*;
 public class Controller {
     @FXML public Button btn_wifi;
     @FXML public Button btn_head;
+    @FXML  public TextArea tf_log;
 
     private Logger logger = Logger.getLogger("hehe");
 
@@ -152,7 +154,66 @@ public class Controller {
         Input(22);
     }
 
+    public void onRemove(MouseEvent mouseEvent) {
+        logger.log(Level.INFO,"rm app");
+        String appName = "KrobotCartoonBook";
+        try {
+          Process p  =  Runtime.getRuntime().exec("adb remount && adb shell rm system/app/" + appName + ".apk");
+            InputStream is  =  p.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuilder temp = new StringBuilder();;
+            while((line = reader.readLine())!= null){
+
+
+                temp.append(line);
+                tf_log.setText(temp.toString());
+                System.out.println(line);
+
+            }
+            p.waitFor();
+            is.close();
+            reader.close();
+            p.destroy();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void onLeft(MouseEvent mouseEvent) {
         Input(21);
+    }
+
+
+    public void onPushApp(MouseEvent mouseEvent) {
+
+    }
+
+    public void onShowPackages(MouseEvent mouseEvent) {
+        logger.log(Level.INFO,"show packages app");
+
+
+
+        try {
+            Process p  =  Runtime.getRuntime().exec("adb shell ls system/app");
+            InputStream is  =  p.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuilder temp = new StringBuilder();;
+            while((line = reader.readLine())!= null){
+                temp.append("\n").append(line);
+                System.out.println(line);
+                tf_log.setText(temp.toString());
+            }
+
+            p.waitFor();
+            is.close();
+            reader.close();
+            p.destroy();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
