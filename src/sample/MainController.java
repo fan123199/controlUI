@@ -1,22 +1,25 @@
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TouchEvent;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static javafx.scene.input.KeyCode.*;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 
-public class Controller {
+public class MainController {
     @FXML public Button btn_wifi;
     @FXML public Button btn_head;
     @FXML  public TextArea tf_log;
@@ -190,30 +193,50 @@ public class Controller {
 
     }
 
-    public void onShowPackages(MouseEvent mouseEvent) {
+    public void onShowPackages(MouseEvent mouseEvent) throws IOException, InterruptedException {
         logger.log(Level.INFO,"show packages app");
 
+        String out = adbRun("adb shell ls system/app");
+        tf_log.setText(out);
 
+    }
 
-        try {
-            Process p  =  Runtime.getRuntime().exec("adb shell ls system/app");
-            InputStream is  =  p.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuilder temp = new StringBuilder();;
-            while((line = reader.readLine())!= null){
-                temp.append("\n").append(line);
-                System.out.println(line);
-                tf_log.setText(temp.toString());
-            }
+    private String adbRun(String command) throws IOException, InterruptedException {
+        return adbRun(command,null);
+    }
 
-            p.waitFor();
-            is.close();
-            reader.close();
-            p.destroy();
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
+    public String adbRun(String command, File dir) throws IOException, InterruptedException {
+        Process p  =  Runtime.getRuntime().exec(command,null,dir);
+        InputStream is  =  p.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String line;
+        StringBuilder temp = new StringBuilder();;
+        while((line = reader.readLine())!= null){
+            temp.append("\n").append(line);
+            System.out.println(line);
         }
+        p.waitFor();
+        is.close();
+        reader.close();
+        p.destroy();
+        return  temp.toString();
+    }
+
+
+    public static String dateStump() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public void onPushLog(MouseEvent mouseEvent) throws IOException, InterruptedException {
+        String date = MainController.dateStump();
+        File dir = new File("C://Users//fdx//Desktop//logcat",date);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        adbRun("adb pull data/krobot/logcat",dir);
 
     }
 }

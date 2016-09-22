@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="root_layout" onKeyPressed="#onKey" prefHeight="655.0" prefWidth="1163.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane fx:id="root_layout" onKeyPressed="#onKey" prefHeight="655.0" prefWidth="1163.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <top>
       <MenuBar prefHeight="0.0" prefWidth="847.0" BorderPane.alignment="CENTER">
         <menus>
@@ -67,6 +67,7 @@
                <TextArea fx:id="tf_log" editable="false" layoutX="373.0" layoutY="18.0" />
             <Button fx:id="btn_push_app" layoutX="858.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
             <Button fx:id="btn_remove" layoutX="863.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
+            <Button fx:id="btn_push_log" layoutX="988.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
            </AnchorPane>
        </SplitPane>
    </center>
