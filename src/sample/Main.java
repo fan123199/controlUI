@@ -13,8 +13,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
+import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 public class Main extends Application {
 
@@ -56,7 +57,6 @@ public class Main extends Application {
     }
 
 
-
     public void saveSettingstoFile(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(MySettings.class);
@@ -67,7 +67,7 @@ public class Main extends Application {
             MySettings settings = new MySettings();
             settings.setBroadCasts(xxx);
 
-            m.marshal(settings,file);
+            m.marshal(settings, file);
 
 
         } catch (JAXBException e) {
@@ -75,4 +75,8 @@ public class Main extends Application {
         }
 
     }
+
+
+
+
 }

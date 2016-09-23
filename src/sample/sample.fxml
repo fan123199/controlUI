@@ -18,6 +18,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
+                <MenuItem mnemonicParsing="false" onAction="#fileChoose" text="Open" />
               <MenuItem mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
@@ -26,9 +27,11 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="Settings">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="m_write" mnemonicParsing="false" onAction="#writeProperties" text="写入配置" />
+                  <MenuItem fx:id="m_read" mnemonicParsing="false" onAction="#readProperties" text="读取配置" />
+                  <MenuItem fx:id="m_reset_property" mnemonicParsing="false" onAction="#resetProperties"  text="重置配置"/>
             </items>
           </Menu>
         </menus>
@@ -38,7 +41,7 @@
        <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <TextField editable="false" layoutX="-2.0" layoutY="124.0" />
-               <TextField layoutY="219.0" />
+               <TextField fx:id="tf_name" layoutY="219.0" />
                <Button layoutX="334.0" layoutY="30.0" mnemonicParsing="false" text="Extras" />
                <Button layoutX="331.0" layoutY="124.0" mnemonicParsing="false" text="Action" />
                <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="156.0" text="Catagory" />
@@ -46,7 +49,7 @@
                <Pane layoutX="725.0" layoutY="20.0" prefHeight="238.0" prefWidth="149.0" style="-fx-background-color: #ccddeeff;">
                    <Button fx:id="btn_head" layoutX="51.0" mnemonicParsing="false" onMouseClicked="#onHead" text="Head" />
                    <Button fx:id="btn_volume_down" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onVolumeDown" prefHeight="34.0" prefWidth="63.0" text="vol -" />
-                   <Button fx:id="btn_volume_up" layoutX="75.0" layoutY="39.0" mnemonicParsing="false" onAction="#doLog" onMouseClicked="#onVolumeUp" prefHeight="34.0" prefWidth="61.0" text="vol +" />
+                   <Button fx:id="btn_volume_up" layoutX="75.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onVolumeUp" prefHeight="34.0" prefWidth="61.0" text="vol +" />
                    <Button fx:id="btn_wifi" layoutX="47.0" layoutY="85.0" mnemonicParsing="false" onMouseClicked="#onWifi" text="WIFI" />
                    <Button fx:id="btn_photo" layoutX="43.0" layoutY="128.0" mnemonicParsing="false" onMouseClicked="#onPhoto" text="Photo" />
                    <Button fx:id="btn_video" layoutX="44.0" layoutY="172.0" mnemonicParsing="false" onMouseClicked="#onVideo" text="Video" />
@@ -62,9 +65,9 @@
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <Button layoutX="60.0" layoutY="26.0" mnemonicParsing="false" text="StartActivity" />
-               <Button layoutX="181.0" layoutY="26.0" mnemonicParsing="false" text="SendbroadCast" />
-               <Button layoutX="296.0" layoutY="26.0" mnemonicParsing="false" text="Forcestop" />
-               <TextArea fx:id="tf_log" editable="false" layoutX="373.0" layoutY="18.0" />
+               <Button layoutX="54.0" layoutY="77.0" mnemonicParsing="false" text="SendbroadCast" />
+               <Button layoutX="67.0" layoutY="130.0" mnemonicParsing="false" text="Forcestop" />
+               <TextArea fx:id="tf_log" editable="false" layoutX="415.0" layoutY="18.0" prefHeight="223.0" prefWidth="335.0" />
             <Button fx:id="btn_push_app" layoutX="858.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
             <Button fx:id="btn_remove" layoutX="863.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
             <Button fx:id="btn_push_log" layoutX="988.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />

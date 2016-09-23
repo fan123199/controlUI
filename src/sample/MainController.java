@@ -1,30 +1,46 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TouchEvent;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
+import utils.DateUtils;
 
 import java.io.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import static java.util.Calendar.MONTH;
-import static java.util.Calendar.YEAR;
+import java.util.Optional;
+import java.util.Properties;
+import java.util.Set;
 
 public class MainController {
-    @FXML public Button btn_wifi;
-    @FXML public Button btn_head;
-    @FXML  public TextArea tf_log;
+    private final String PNAME = "devicesname.properties";
+    public Button btn_wifi;
+    public Button btn_head;
+    public TextArea tf_log;
+    public TextField tf_name;
 
-    private Logger logger = Logger.getLogger("hehe");
+    private Properties properties = new Properties();
+    private String deviceId;
+    private String name;
+
+    public MainController() {
+        devicesNum = 2;
+    }
+
+    @FXML public void initialize() {
+
+
+        readProperties(null);
+
+    }
+
+    Logger logger = LoggerFactory.getLogger(MainController.class);
 
     private Main mainApp;
     private String arg1 = " -d ";
@@ -36,13 +52,13 @@ public class MainController {
 
     @FXML
     public void onVolumeDown(MouseEvent mouseEvent) {
-        logger.log(Level.INFO, "button use");
+        logger.debug("button use");
             Input(25);
     }
 
     @FXML
     public void onVolumeUp(MouseEvent mouseEvent) {
-        logger.log(Level.INFO, "button use");
+        logger.debug("button use");
         Input(24);
     }
 
@@ -64,12 +80,9 @@ public class MainController {
             }
             sb.append(" shell input keyevent ").append(keyCode);
 
-//            Runtime.getRuntime().exec(sb.toString());
-            Runtime.getRuntime().exec("adb "+ arg1 +" shell input keyevent " + keyCode);
-            System.out.print(1);
+            Runtime.getRuntime().exec(sb.toString());
         } catch (IOException e) {
-            e.printStackTrace(); System.out.print(-1);
-
+            e.printStackTrace();
         }
     }
 
@@ -83,12 +96,6 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-
-    @FXML public void doLog() {
-        logger.log(Level.INFO, "always do it");
     }
 
     @FXML public void onKey(KeyEvent keyEvent) {
@@ -135,37 +142,28 @@ public class MainController {
     public void onVideo(MouseEvent mouseEvent) {
         Input(133);
     }
-
-    @FXML void oneee(TouchEvent dd, int c ,int d) {
-
-    }
-
     public void onUp(MouseEvent mouseEvent) {
         Input(19);
     }
-
     public void onOK(MouseEvent mouseEvent) {
         Input(212);
     }
-
     public void onDown(MouseEvent mouseEvent) {
         Input(20);
     }
-
-
     public void onRight(MouseEvent mouseEvent) {
         Input(22);
     }
 
     public void onRemove(MouseEvent mouseEvent) {
-        logger.log(Level.INFO,"rm app");
+        logger.debug("rm app");
         String appName = "KrobotCartoonBook";
         try {
           Process p  =  Runtime.getRuntime().exec("adb remount && adb shell rm system/app/" + appName + ".apk");
             InputStream is  =  p.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
-            StringBuilder temp = new StringBuilder();;
+            StringBuilder temp = new StringBuilder();
             while((line = reader.readLine())!= null){
 
 
@@ -194,7 +192,7 @@ public class MainController {
     }
 
     public void onShowPackages(MouseEvent mouseEvent) throws IOException, InterruptedException {
-        logger.log(Level.INFO,"show packages app");
+        logger.debug("show packages app");
 
         String out = adbRun("adb shell ls system/app");
         tf_log.setText(out);
@@ -223,20 +221,122 @@ public class MainController {
     }
 
 
-    public static String dateStump() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = new Date();
-        return dateFormat.format(date);
-    }
-
     public void onPushLog(MouseEvent mouseEvent) throws IOException, InterruptedException {
-        String date = MainController.dateStump();
+        String date = DateUtils.dateStump();
         File dir = new File("C://Users//fdx//Desktop//logcat",date);
         if (!dir.exists()) {
             dir.mkdirs();
+            dir.setExecutable(true);
         }
 
         adbRun("adb pull data/krobot/logcat",dir);
 
+    }
+
+    public void writeProperties(ActionEvent actionEvent) {
+
+        try {
+            File file = new File(PNAME);
+            if (file.exists()) {
+                properties.clear();
+                properties.load(new FileInputStream(file));
+            }
+            OutputStream outputStream = new FileOutputStream(file);
+
+            boolean debug = false;
+            if (debug) {
+                Set<String> theKeys = properties.stringPropertyNames();
+
+                if (!theKeys.contains(deviceId)) {
+                    name = tf_name.getText();
+                    properties.setProperty(name, deviceId);
+                }
+            }
+
+            name = tf_name.getText();
+            properties.setProperty(name, "adbded");
+            tf_name.clear();
+
+            properties.setProperty("number", "2015");
+            properties.setProperty("song", "ddd");
+            if (properties.getProperty("fdx")==null ) {
+                System.out.println("null fdx");
+                properties.setProperty("fdx", "very bad 2");
+            }
+            System.out.println("a:"+properties.getProperty("fdx"));
+            properties.store(outputStream, "update");
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readProperties(ActionEvent actionEvent) {
+
+        try {
+
+            File file = new File(PNAME);
+            if (file.exists()) {
+                System.out.println(file.getAbsoluteFile());
+                InputStream fis = new FileInputStream(file);
+                properties.load(fis);
+            }
+            logger.info(String.valueOf(file.exists()));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        Set<String> theKeys = properties.stringPropertyNames();
+        for (String s : theKeys
+                ) {
+            if (properties.getProperty(s).equals("303000f10200a6e6bb0a")) {
+                logger.info("I have 24");
+            }
+
+        }
+
+        System.out.println("number:" + properties.getProperty("number") + ",song:" + properties.getProperty("song"));
+
+        if (tf_log != null) {
+
+            tf_log.setText(properties.getProperty("24"));
+        }
+    }
+
+    public void resetProperties(ActionEvent actionEvent) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("I have a great message for you!");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+
+            try {
+                File file = new File(PNAME);
+                if (file.exists()) {
+                    properties.clear();
+                }
+                OutputStream outputStream = new FileOutputStream(file,false);
+                properties.setProperty("24", "303000f10200a6e6bb0a");
+                properties.store(outputStream, "update");
+                logger.info("update");
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+    public void fileChoose(ActionEvent actionEvent) {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        Window stage = new Stage();
+        File file = fileChooser.showOpenDialog(stage);
     }
 }
