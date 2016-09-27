@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -8,6 +9,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
@@ -31,7 +33,7 @@
             <items>
               <MenuItem fx:id="m_write" mnemonicParsing="false" onAction="#writeProperties" text="写入配置" />
                   <MenuItem fx:id="m_read" mnemonicParsing="false" onAction="#readProperties" text="读取配置" />
-                  <MenuItem fx:id="m_reset_property" mnemonicParsing="false" onAction="#resetProperties"  text="重置配置"/>
+                  <MenuItem fx:id="m_reset_property" mnemonicParsing="false" onAction="#resetProperties" text="重置配置" />
             </items>
           </Menu>
         </menus>
@@ -64,13 +66,31 @@
             <Button layoutX="553.0" layoutY="219.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <Button layoutX="60.0" layoutY="26.0" mnemonicParsing="false" text="StartActivity" />
+               <Button layoutX="55.0" layoutY="26.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="207.0" text="StartActivity" />
                <Button layoutX="54.0" layoutY="77.0" mnemonicParsing="false" text="SendbroadCast" />
-               <Button layoutX="67.0" layoutY="130.0" mnemonicParsing="false" text="Forcestop" />
-               <TextArea fx:id="tf_log" editable="false" layoutX="415.0" layoutY="18.0" prefHeight="223.0" prefWidth="335.0" />
+               <Button layoutX="53.0" layoutY="130.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="210.0" text="Forcestop" />
+            <Group layoutX="307.0" layoutY="25.0" />
             <Button fx:id="btn_push_app" layoutX="858.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
             <Button fx:id="btn_remove" layoutX="863.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
             <Button fx:id="btn_push_log" layoutX="988.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
+            <TitledPane animated="false" layoutX="319.0" layoutY="33.0" text="OUTOUT">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                           <TextArea fx:id="tf_log" editable="false" layoutX="-1.0" layoutY="-15.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+            <TitledPane animated="false" layoutX="556.0" layoutY="33.0" text="CONSOLE">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextArea layoutX="-14.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
            </AnchorPane>
        </SplitPane>
    </center>
