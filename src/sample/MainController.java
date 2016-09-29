@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -24,6 +25,7 @@ public class MainController {
     public Button btn_head;
     public TextArea tf_log;
     public TextField tf_name;
+    public BorderPane root_layout;
 
     private Properties properties = new Properties();
     private String deviceId;
@@ -98,7 +100,7 @@ public class MainController {
         }
     }
 
-    @FXML public void onKey(KeyEvent keyEvent) {
+    public void onKey(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case A:
                 break;
@@ -195,8 +197,10 @@ public class MainController {
         logger.debug("show packages app");
 
         String out = adbRun("adb shell ls system/app");
-        tf_log.setText(out);
+//        tf_log.setText(out);
 
+        String out2 = adbRun("adb shell pm list packages | grep -E 'krobot|kingrobot'");
+        tf_log.setText("\n ::::" + out2);
     }
 
     private String adbRun(String command) throws IOException, InterruptedException {
@@ -225,8 +229,8 @@ public class MainController {
         String date = DateUtils.dateStump();
         File dir = new File("C://Users//fdx//Desktop//logcat",date);
         if (!dir.exists()) {
-            dir.mkdirs();
-            dir.setExecutable(true);
+           boolean a =  dir.mkdirs();
+            boolean b = dir.setExecutable(true);
         }
 
         adbRun("adb pull data/krobot/logcat",dir);
@@ -266,8 +270,6 @@ public class MainController {
             System.out.println("a:"+properties.getProperty("fdx"));
             properties.store(outputStream, "update");
             outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -312,7 +314,7 @@ public class MainController {
         alert.setHeaderText("Look, an Information Dialog");
         alert.setContentText("I have a great message for you!");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.isPresent() && result.get() == ButtonType.OK){
 
             try {
                 File file = new File(PNAME);
@@ -338,5 +340,10 @@ public class MainController {
         fileChooser.setTitle("Open Resource File");
         Window stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
+    }
+
+    public void closeWindow(ActionEvent actionEvent) {
+        Stage stage = (Stage) root_layout.getScene().getWindow();
+        stage.close();
     }
 }
