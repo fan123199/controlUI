@@ -215,12 +215,14 @@ public class MainController {
         tf_log.setText("\n ::::" + out2);
         List<String> myDataStructure = new ArrayList<>();
         String[] c = out2.trim().split("\n\n");
-        String d  = out2.trim();
         logger.info("trim out2 :" +  Arrays.toString(c));
         myDataStructure.addAll(Arrays.asList(c));
 
         ObservableList<String> obList = FXCollections.observableList(myDataStructure);
         lv_what.setItems(obList);
+        lv_what.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+
 
     }
 
@@ -367,6 +369,13 @@ public class MainController {
     public void closeWindow(ActionEvent actionEvent) {
         Stage stage = (Stage) root_layout.getScene().getWindow();
         stage.close();
+    }
+
+    public void onTest(MouseEvent actionEvent) {
+        String whatIChoose = lv_what.getSelectionModel().getSelectedItem();
+        int whatIChooseIndex = lv_what.getSelectionModel().getSelectedIndex();
+
+        logger.info(",,,,,whatIchoose: "+whatIChoose);
     }
 
 
