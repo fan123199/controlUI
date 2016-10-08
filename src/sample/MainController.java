@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 import utils.DateUtils;
 
 import java.io.*;
@@ -20,12 +19,15 @@ import java.util.Properties;
 import java.util.Set;
 
 public class MainController {
-    private final String PNAME = "devicesname.properties";
+    private final String PropetyName = "devicesname.properties";
     public Button btn_wifi;
     public Button btn_head;
     public TextArea tf_log;
     public TextField tf_name;
     public BorderPane root_layout;
+    public TitledPane tp_output;
+    public Button btn_backward;
+    public Button btn_home;
 
     private Properties properties = new Properties();
     private String deviceId;
@@ -55,25 +57,25 @@ public class MainController {
     @FXML
     public void onVolumeDown(MouseEvent mouseEvent) {
         logger.debug("button use");
-            Input(25);
+            adbInput(25);
     }
 
     @FXML
     public void onVolumeUp(MouseEvent mouseEvent) {
         logger.debug("button use");
-        Input(24);
+        adbInput(24);
     }
 
-//    private static void Input(KeyCode keyCode){
+//    private static void adbInput(KeyCode keyCode){
 //        String sKeyCode = keyCode.getName();
-//        Input(sKeyCode);
+//        adbInput(sKeyCode);
 //    }
 
-    private  void Input(int keyCode){
+    private  void adbInput(int keyCode){
         String sKeyCode = String.valueOf(keyCode);
-        this.Input(sKeyCode);
+        this.adbInput(sKeyCode);
     }
-    private  void Input(String keyCode) {
+    private  void adbInput(String keyCode) {
         try {
 
             StringBuilder sb = new StringBuilder("adb");
@@ -111,55 +113,56 @@ public class MainController {
 
             //上下左右
             case UP:
-                Input(19);
+                adbInput(19);
                 break;
             case DOWN:
-                Input(20);
+                adbInput(20);
                 break;
             case LEFT:
-                Input(21);
+                adbInput(21);
                 break;
             case RIGHT:
-                Input(22);
+                adbInput(22);
                 break;
             case PLUS:
-                Input(24);
+                adbInput(24);
                 break;
             case MINUS:
-                Input(25);
+                adbInput(25);
                 break;
 
         }
     }
 
     public void onHead(MouseEvent mouseEvent) {
-        Input(118);
+        adbInput(118);
     }
     public void onWifi(MouseEvent mouseEvent) {
-        Input(131);
+        adbInput(131);
     }
     public void onPhoto(MouseEvent mouseEvent) {
-        Input(132);
+        adbInput(132);
     }
     public void onVideo(MouseEvent mouseEvent) {
-        Input(133);
+        adbInput(133);
     }
     public void onUp(MouseEvent mouseEvent) {
-        Input(19);
+        adbInput(19);
     }
     public void onOK(MouseEvent mouseEvent) {
-        Input(212);
+        adbInput(212);
     }
     public void onDown(MouseEvent mouseEvent) {
-        Input(20);
+        adbInput(20);
     }
     public void onRight(MouseEvent mouseEvent) {
-        Input(22);
+        adbInput(22);
     }
 
     public void onRemove(MouseEvent mouseEvent) {
         logger.debug("rm app");
         String appName = "KrobotCartoonBook";
+
         try {
           Process p  =  Runtime.getRuntime().exec("adb remount && adb shell rm system/app/" + appName + ".apk");
             InputStream is  =  p.getInputStream();
@@ -185,7 +188,7 @@ public class MainController {
     }
 
     public void onLeft(MouseEvent mouseEvent) {
-        Input(21);
+        adbInput(21);
     }
 
 
@@ -240,7 +243,7 @@ public class MainController {
     public void writeProperties(ActionEvent actionEvent) {
 
         try {
-            File file = new File(PNAME);
+            File file = new File(PropetyName);
             if (file.exists()) {
                 properties.clear();
                 properties.load(new FileInputStream(file));
@@ -279,7 +282,7 @@ public class MainController {
 
         try {
 
-            File file = new File(PNAME);
+            File file = new File(PropetyName);
             if (file.exists()) {
                 System.out.println(file.getAbsoluteFile());
                 InputStream fis = new FileInputStream(file);
@@ -303,7 +306,7 @@ public class MainController {
 
         if (tf_log != null) {
 
-            tf_log.setText(properties.getProperty("24"));
+            tf_log.setText(  "24: id :"  +  properties.getProperty("24"));
         }
     }
 
@@ -317,7 +320,7 @@ public class MainController {
         if (result.isPresent() && result.get() == ButtonType.OK){
 
             try {
-                File file = new File(PNAME);
+                File file = new File(PropetyName);
                 if (file.exists()) {
                     properties.clear();
                 }
@@ -345,5 +348,13 @@ public class MainController {
     public void closeWindow(ActionEvent actionEvent) {
         Stage stage = (Stage) root_layout.getScene().getWindow();
         stage.close();
+    }
+
+    public void onHome(MouseEvent mouseEvent) {
+        adbInput(3);
+    }
+
+    public void onBackward(MouseEvent mouseEvent) {
+        adbInput(4);
     }
 }

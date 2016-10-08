@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -21,7 +22,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#fileChoose" text="Open" />
-              <MenuItem  onAction="#closeWindow" mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#closeWindow" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -42,12 +43,11 @@
    <center>
        <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <TextField editable="false" layoutX="-2.0" layoutY="124.0" />
                <TextField fx:id="tf_name" layoutY="219.0" />
-               <Button layoutX="334.0" layoutY="30.0" mnemonicParsing="false" text="Extras" />
-               <Button layoutX="331.0" layoutY="124.0" mnemonicParsing="false" text="Action" />
-               <Button layoutX="336.0" layoutY="219.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="156.0" text="Catagory" />
-               <ListView layoutX="507.0" layoutY="24.0" prefHeight="173.0" prefWidth="174.0" />
+               <Button layoutX="255.0" layoutY="129.0" mnemonicParsing="false" text="Extras" />
+               <Button layoutX="254.0" layoutY="170.0" mnemonicParsing="false" text="Action" />
+               <Button layoutX="254.0" layoutY="209.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" text="Catagory" />
+               <ListView layoutX="513.0" layoutY="67.0" prefHeight="173.0" prefWidth="174.0" />
                <Pane layoutX="725.0" layoutY="20.0" prefHeight="238.0" prefWidth="149.0" style="-fx-background-color: #ccddeeff;">
                    <Button fx:id="btn_head" layoutX="51.0" mnemonicParsing="false" onMouseClicked="#onHead" text="Head" />
                    <Button fx:id="btn_volume_down" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onVolumeDown" prefHeight="34.0" prefWidth="63.0" text="vol -" />
@@ -56,33 +56,39 @@
                    <Button fx:id="btn_photo" layoutX="43.0" layoutY="128.0" mnemonicParsing="false" onMouseClicked="#onPhoto" text="Photo" />
                    <Button fx:id="btn_video" layoutX="44.0" layoutY="172.0" mnemonicParsing="false" onMouseClicked="#onVideo" text="Video" />
                </Pane>
-               <Pane layoutX="910.0" layoutY="64.0" style="-fx-background-color: #aa112233;">
-                   <Button fx:id="btn_left" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onLeft" text="left" />
-                   <Button fx:id="btn_right" layoutX="71.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onRight" text="right" />
-                   <Button fx:id="btn_down" layoutX="38.0" layoutY="72.0" mnemonicParsing="false" onMouseClicked="#onDown" text="down" />
-                   <Button fx:id="btn_up" layoutX="38.0" mnemonicParsing="false" onMouseClicked="#onUp" text="up" />
-                   <Button fx:id="btn_ok" layoutX="161.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#onOK" text="OK" />
-               </Pane>
-            <Button layoutX="553.0" layoutY="219.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
+            <Pane layoutX="920.0" layoutY="25.0">
+               <children>
+                      <Button fx:id="btn_left" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onLeft" text="left" />
+                      <Button fx:id="btn_right" layoutX="71.0" layoutY="33.0" mnemonicParsing="false" onMouseClicked="#onRight" text="right" />
+                      <Button fx:id="btn_down" layoutX="38.0" layoutY="72.0" mnemonicParsing="false" onMouseClicked="#onDown" text="down" />
+                      <Button fx:id="btn_up" layoutX="38.0" mnemonicParsing="false" onMouseClicked="#onUp" text="up" />
+                      <Button fx:id="btn_ok" layoutX="161.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#onOK" text="OK" />
+                  <Button fx:id="btn_backward" layoutX="11.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#onBackward" text="Backward" />
+                  <Button fx:id="btn_home" layoutX="93.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#onHome" text="Home" />
+               </children>
+            </Pane>
+            <Button fx:id="btn_push_log" layoutX="73.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
+            <ChoiceBox layoutX="337.0" layoutY="209.0" prefWidth="150.0" />
+            <ChoiceBox layoutX="307.0" layoutY="170.0" prefWidth="150.0" />
+            <ChoiceBox layoutX="307.0" layoutY="129.0" prefWidth="150.0" />
+               <Button layoutX="258.0" layoutY="257.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="StartActivity" />
+               <Button layoutX="364.0" layoutY="257.0" mnemonicParsing="false" text="SendbroadCast" />
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <Button layoutX="55.0" layoutY="26.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="207.0" text="StartActivity" />
-               <Button layoutX="54.0" layoutY="77.0" mnemonicParsing="false" text="SendbroadCast" />
-               <Button layoutX="53.0" layoutY="130.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="210.0" text="Forcestop" />
+               <Button layoutX="873.0" layoutY="88.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="100.0" text="Forcestop" />
             <Group layoutX="307.0" layoutY="25.0" />
-            <Button fx:id="btn_push_app" layoutX="858.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
-            <Button fx:id="btn_remove" layoutX="863.0" layoutY="136.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
-            <Button fx:id="btn_push_log" layoutX="988.0" layoutY="68.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
-            <TitledPane animated="false" layoutX="319.0" layoutY="33.0" text="OUTOUT">
+            <Button fx:id="btn_push_app" layoutX="864.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
+            <Button fx:id="btn_remove" layoutX="923.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
+            <TitledPane animated="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
                      <children>
                            <TextArea fx:id="tf_log" editable="false" layoutX="-1.0" layoutY="-15.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
               </content>
             </TitledPane>
-            <TitledPane animated="false" layoutX="556.0" layoutY="33.0" text="CONSOLE">
+            <TitledPane fx:id="tp_output" animated="false" layoutX="656.0" layoutY="14.0" text="CONSOLE">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -91,6 +97,10 @@
                   </AnchorPane>
               </content>
             </TitledPane>
+            <Button layoutX="523.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
+            <Button fx:id="btn_remove1" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
+               <TextField editable="false" layoutX="931.0" layoutY="128.0" />
+            <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
            </AnchorPane>
        </SplitPane>
    </center>
