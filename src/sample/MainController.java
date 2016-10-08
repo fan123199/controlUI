@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,9 +16,10 @@ import org.slf4j.LoggerFactory;
 import utils.DateUtils;
 
 import java.io.*;
-import java.util.Optional;
-import java.util.Properties;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
+
+import static javafx.scene.input.KeyCode.T;
 
 public class MainController {
     private final String PropetyName = "devicesname.properties";
@@ -28,6 +31,7 @@ public class MainController {
     public TitledPane tp_output;
     public Button btn_backward;
     public Button btn_home;
+    public ListView<String> lv_what;
 
     private Properties properties = new Properties();
     private String deviceId;
@@ -158,6 +162,12 @@ public class MainController {
     public void onRight(MouseEvent mouseEvent) {
         adbInput(22);
     }
+    public void onHome(MouseEvent mouseEvent) {
+        adbInput(3);
+    }
+    public void onBackward(MouseEvent mouseEvent) {
+        adbInput(4);
+    }
 
     public void onRemove(MouseEvent mouseEvent) {
         logger.debug("rm app");
@@ -200,10 +210,18 @@ public class MainController {
         logger.debug("show packages app");
 
         String out = adbRun("adb shell ls system/app");
-//        tf_log.setText(out);
 
         String out2 = adbRun("adb shell pm list packages | grep -E 'krobot|kingrobot'");
         tf_log.setText("\n ::::" + out2);
+        List<String> myDataStructure = new ArrayList<>();
+        String[] c = out2.trim().split("\n\n");
+        String d  = out2.trim();
+        logger.info("trim out2 :" +  Arrays.toString(c));
+        myDataStructure.addAll(Arrays.asList(c));
+
+        ObservableList<String> obList = FXCollections.observableList(myDataStructure);
+        lv_what.setItems(obList);
+
     }
 
     private String adbRun(String command) throws IOException, InterruptedException {
@@ -217,7 +235,8 @@ public class MainController {
         String line;
         StringBuilder temp = new StringBuilder();;
         while((line = reader.readLine())!= null){
-            temp.append("\n").append(line);
+            temp.append(line).append("\n");
+
             System.out.println(line);
         }
         p.waitFor();
@@ -350,11 +369,5 @@ public class MainController {
         stage.close();
     }
 
-    public void onHome(MouseEvent mouseEvent) {
-        adbInput(3);
-    }
 
-    public void onBackward(MouseEvent mouseEvent) {
-        adbInput(4);
-    }
 }

@@ -47,7 +47,6 @@
                <Button layoutX="255.0" layoutY="129.0" mnemonicParsing="false" text="Extras" />
                <Button layoutX="254.0" layoutY="170.0" mnemonicParsing="false" text="Action" />
                <Button layoutX="254.0" layoutY="209.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" text="Catagory" />
-               <ListView layoutX="513.0" layoutY="67.0" prefHeight="173.0" prefWidth="174.0" />
                <Pane layoutX="725.0" layoutY="20.0" prefHeight="238.0" prefWidth="149.0" style="-fx-background-color: #ccddeeff;">
                    <Button fx:id="btn_head" layoutX="51.0" mnemonicParsing="false" onMouseClicked="#onHead" text="Head" />
                    <Button fx:id="btn_volume_down" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#onVolumeDown" prefHeight="34.0" prefWidth="63.0" text="vol -" />
@@ -79,7 +78,7 @@
             <Group layoutX="307.0" layoutY="25.0" />
             <Button fx:id="btn_push_app" layoutX="864.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
             <Button fx:id="btn_remove" layoutX="923.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
-            <TitledPane animated="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
+            <TitledPane animated="false" expanded="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
                      <children>
@@ -101,6 +100,7 @@
             <Button fx:id="btn_remove1" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
                <TextField editable="false" layoutX="931.0" layoutY="128.0" />
             <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
+               <ListView fx:id="lv_what" layoutX="10.0" layoutY="65.0" prefHeight="236.0" prefWidth="600.0" />
            </AnchorPane>
        </SplitPane>
    </center>
