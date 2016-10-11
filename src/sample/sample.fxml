@@ -43,7 +43,7 @@
    <center>
        <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <TextField fx:id="tf_name" layoutY="219.0" />
+               <TextField fx:id="tf_name" layoutX="23.0" layoutY="30.0" prefHeight="34.0" prefWidth="570.0" onMouseClicked="#onHint" />
                <Button layoutX="255.0" layoutY="129.0" mnemonicParsing="false" text="Extras" />
                <Button layoutX="254.0" layoutY="170.0" mnemonicParsing="false" text="Action" />
                <Button layoutX="254.0" layoutY="209.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" text="Catagory" />
@@ -66,28 +66,20 @@
                   <Button fx:id="btn_home" layoutX="93.0" layoutY="145.0" mnemonicParsing="false" onMouseClicked="#onHome" text="Home" />
                </children>
             </Pane>
-            <Button fx:id="btn_push_log" layoutX="73.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
+            <Button fx:id="btn_push_log" layoutX="67.0" layoutY="187.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
             <ChoiceBox layoutX="337.0" layoutY="209.0" prefWidth="150.0" />
             <ChoiceBox layoutX="307.0" layoutY="170.0" prefWidth="150.0" />
             <ChoiceBox layoutX="307.0" layoutY="129.0" prefWidth="150.0" />
                <Button layoutX="258.0" layoutY="257.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="97.0" text="StartActivity" />
-               <Button layoutX="364.0" layoutY="257.0" mnemonicParsing="false" text="SendbroadCast" />
-            <Button fx:id="btn_test" layoutX="412.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#onTest" text="TEST" />
+               <Button fx:id="btn_send_broadcast" layoutX="364.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#onSendBroadCast" text="SendBroadCast" />
+            <Button fx:id="btn_test" layoutX="567.0" layoutY="112.0" mnemonicParsing="false" onMouseClicked="#onTest" text="TEST" />
+            <Button fx:id="btn_focus_act" layoutX="67.0" layoutY="72.0" mnemonicParsing="false" onMouseClicked="#onFocusActivity" text="focusAct" />
            </AnchorPane>
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <Button layoutX="873.0" layoutY="88.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="100.0" text="Forcestop" />
             <Group layoutX="307.0" layoutY="25.0" />
             <Button fx:id="btn_push_app" layoutX="864.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
             <Button fx:id="btn_remove" layoutX="923.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
-            <TitledPane animated="false" expanded="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
-                     <children>
-                           <TextArea fx:id="tf_log" editable="false" layoutX="-1.0" layoutY="-15.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </TitledPane>
             <TitledPane fx:id="tp_output" animated="false" layoutX="656.0" layoutY="14.0" text="CONSOLE">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -98,10 +90,19 @@
               </content>
             </TitledPane>
             <Button layoutX="523.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
-            <Button fx:id="btn_remove1" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
+            <Button fx:id="btn_uninstall" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
                <TextField editable="false" layoutX="931.0" layoutY="128.0" />
             <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
                <ListView fx:id="lv_what" layoutX="10.0" layoutY="65.0" prefHeight="236.0" prefWidth="600.0" />
+            <TitledPane animated="false" expanded="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
+                     <children>
+                           <TextArea fx:id="tf_log" editable="false" layoutX="-1.0" layoutY="-15.0" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
            </AnchorPane>
        </SplitPane>
    </center>

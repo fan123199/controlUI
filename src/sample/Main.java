@@ -57,7 +57,7 @@ public class Main extends Application {
     }
 
 
-    public void saveSettingstoFile(File file) {
+    public void saveSettings2File(File file) {
         try {
             JAXBContext context = JAXBContext.newInstance(MySettings.class);
             Marshaller m = context.createMarshaller();
