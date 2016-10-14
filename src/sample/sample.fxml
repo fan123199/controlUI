@@ -43,7 +43,7 @@
    <center>
        <SplitPane fx:id="spilt_pane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-               <TextField fx:id="tf_name" layoutX="23.0" layoutY="30.0" prefHeight="34.0" prefWidth="570.0" onMouseClicked="#onHint" />
+               <TextField fx:id="tf_name" layoutX="23.0" layoutY="30.0" onMouseClicked="#onHint" prefHeight="34.0" prefWidth="570.0" />
                <Button layoutX="255.0" layoutY="129.0" mnemonicParsing="false" text="Extras" />
                <Button layoutX="254.0" layoutY="170.0" mnemonicParsing="false" text="Action" />
                <Button layoutX="254.0" layoutY="209.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" text="Catagory" />
@@ -89,12 +89,12 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-            <Button layoutX="523.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
+            <Button fx:id="btn_system_app"  layoutX="744.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#onShowPackages"  text="show system app" />
             <Button fx:id="btn_uninstall" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
                <TextField editable="false" layoutX="931.0" layoutY="128.0" />
             <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
                <ListView fx:id="lv_what" layoutX="10.0" layoutY="65.0" prefHeight="236.0" prefWidth="600.0" />
-            <TitledPane animated="false" expanded="false" layoutX="42.0" layoutY="7.0" prefHeight="295.0" prefWidth="479.0" text="OUTOUT">
+            <TitledPane animated="false" expanded="false" layoutX="10.0" layoutY="3.0" prefHeight="59.0" prefWidth="479.0" text="OUTOUT">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
                      <children>
@@ -103,6 +103,7 @@
                   </AnchorPane>
               </content>
             </TitledPane>
+            <Button layoutX="623.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
            </AnchorPane>
        </SplitPane>
    </center>

@@ -201,6 +201,10 @@ public class MainController {
     public void onShowPackages(MouseEvent mouseEvent) throws IOException, InterruptedException {
         logger.debug("show packages app");
 
+        if (true) {
+            logger.info(mouseEvent.getPickResult().getIntersectedNode().toString());
+            return;
+        }
         String out = adbRun("adb shell ls system/app");
 
         String out2 = adbRun("adb shell pm list packages | grep -E 'krobot|kingrobot'");
