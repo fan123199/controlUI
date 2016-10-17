@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,9 +17,6 @@ import utils.DateUtils;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
-
-import static javafx.scene.input.KeyCode.L;
 
 public class MainController {
     private final String PropetyName = "devicesname.properties";
@@ -32,7 +28,7 @@ public class MainController {
     public TitledPane tp_output;
     public Button btn_backward;
     public Button btn_home;
-    public ListView<String> lv_what;
+    public ListView<String> lv_list;
     public Button btn_focus_act;
     public Button btn_send_broadcast;
 
@@ -40,6 +36,8 @@ public class MainController {
     private String deviceId;
     private String name;
     private List<String> allCmd = new ArrayList<>();
+
+    boolean isRemounted  = false;
 
     public MainController() {
         devicesNum = 2;
@@ -183,8 +181,8 @@ public class MainController {
     public void onRemove(MouseEvent mouseEvent) {
         logger.debug("rm app");
         String appName = "KrobotCartoonBook";
-
-        String output = adbRun("adb remount && adb shell rm system/app/" + appName + ".apk");
+        String aName = lv_list.getSelectionModel().getSelectedItem();
+        String output = adbRun("adb shell rm system/app/" + aName );
         tf_log.setText(output);
 
     }
@@ -198,14 +196,10 @@ public class MainController {
 
     }
 
-    public void onShowPackages(MouseEvent mouseEvent) throws IOException, InterruptedException {
+    public void onShowPackages(MouseEvent mouseEvent) {
         logger.debug("show packages app");
 
-        if (true) {
-            logger.info(mouseEvent.getPickResult().getIntersectedNode().toString());
-            return;
-        }
-        String out = adbRun("adb shell ls system/app");
+
 
         String out2 = adbRun("adb shell pm list packages | grep -E 'krobot|kingrobot'");
         tf_log.setText("\n ::::" + out2);
@@ -215,11 +209,24 @@ public class MainController {
         myDataStructure.addAll(Arrays.asList(c));
 
         ObservableList<String> obList = FXCollections.observableList(myDataStructure);
-        lv_what.setItems(obList);
-        lv_what.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-
+        lv_list.setItems(obList);
+        lv_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     }
+
+
+    public void onShowApp(MouseEvent mouseEvent) {
+
+        String out = adbRun("adb shell ls system/app");
+        tf_log.setText("\n ::::" + out);
+        List<String> myDataStructure = new ArrayList<>();
+        String[] c = out.trim().split("\n\n");
+        logger.info("trim out2 :" + Arrays.toString(c));
+        myDataStructure.addAll(Arrays.asList(c));
+        ObservableList<String> obList = FXCollections.observableList(myDataStructure);
+        lv_list.setItems(obList);
+        lv_list.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+    }
+
 
     private String adbRun(String command) {
         return adbRun(command, null);
@@ -227,11 +234,18 @@ public class MainController {
 
     public String adbRun(String command, File dir) {
         if (devicesNum > 1 && !command.contains("-d")) {
-            command = command.replaceFirst("adb", "adb -d");
+            command = command.replace("adb", "adb -d");
         }
+
         logger.info("final command: " + command);
         StringBuilder temp = new StringBuilder();
         try {
+            if (!isRemounted) {
+                Runtime.getRuntime().exec("adb remount", null, dir);
+                logger.info(" remount now");
+                isRemounted = true;
+            }
+
             Process p = Runtime.getRuntime().exec(command, null, dir);
             InputStream is = p.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -375,8 +389,8 @@ public class MainController {
     }
 
     public void onTest(MouseEvent actionEvent) {
-        String whatIChoose = lv_what.getSelectionModel().getSelectedItem();
-        int whatIChooseIndex = lv_what.getSelectionModel().getSelectedIndex();
+        String whatIChoose = lv_list.getSelectionModel().getSelectedItem();
+        int whatIChooseIndex = lv_list.getSelectionModel().getSelectedIndex();
 
         logger.info(",,,,,whatIchoose: " + whatIChoose);
     }
@@ -439,5 +453,11 @@ public class MainController {
             sb.append(s).append("\n");
         }
         tf_log.setText(sb.toString());
+    }
+
+
+    public void onReboot(MouseEvent mouseEvent) {
+
+        adbRun("adb reboot");
     }
 }

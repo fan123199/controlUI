@@ -79,7 +79,7 @@
                <Button layoutX="873.0" layoutY="88.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="100.0" text="Forcestop" />
             <Group layoutX="307.0" layoutY="25.0" />
             <Button fx:id="btn_push_app" layoutX="864.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onPushApp" text="push app" />
-            <Button fx:id="btn_remove" layoutX="923.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
+            <Button fx:id="btn_remove" layoutX="757.0" layoutY="263.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="rm app" />
             <TitledPane fx:id="tp_output" animated="false" layoutX="656.0" layoutY="14.0" text="CONSOLE">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -89,11 +89,11 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-            <Button fx:id="btn_system_app"  layoutX="744.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#onShowPackages"  text="show system app" />
-            <Button fx:id="btn_uninstall" layoutX="1026.0" layoutY="184.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
+            <Button fx:id="btn_system_app" layoutX="732.0" layoutY="229.0" mnemonicParsing="false" onMouseClicked="#onShowApp" text="show system app" />
+            <Button fx:id="btn_uninstall" layoutX="626.0" layoutY="263.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
                <TextField editable="false" layoutX="931.0" layoutY="128.0" />
             <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
-               <ListView fx:id="lv_what" layoutX="10.0" layoutY="65.0" prefHeight="236.0" prefWidth="600.0" />
+               <ListView fx:id="lv_list" layoutX="10.0" layoutY="65.0" prefHeight="236.0" prefWidth="600.0" />
             <TitledPane animated="false" expanded="false" layoutX="10.0" layoutY="3.0" prefHeight="59.0" prefWidth="479.0" text="OUTOUT">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="260.0" prefWidth="522.0">
@@ -103,7 +103,8 @@
                   </AnchorPane>
               </content>
             </TitledPane>
-            <Button layoutX="623.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
+            <Button layoutX="621.0" layoutY="229.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" text="show packages" />
+            <Button fx:id="btn_system_app1" layoutX="942.0" layoutY="212.0" mnemonicParsing="false" onMouseClicked="#onReboot" prefHeight="63.0" prefWidth="113.0" text="REBOOT" />
            </AnchorPane>
        </SplitPane>
    </center>
