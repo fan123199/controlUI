@@ -18,6 +18,9 @@ import utils.DateUtils;
 import java.io.*;
 import java.util.*;
 
+import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
+
+@SuppressWarnings("UnusedParameters")
 public class MainController {
     private final String PropetyName = "devicesname.properties";
     public Button btn_wifi;
@@ -37,7 +40,7 @@ public class MainController {
     private String name;
     private List<String> allCmd = new ArrayList<>();
 
-    boolean isRemounted  = false;
+    boolean isRemounted = false;
 
     public MainController() {
         devicesNum = 2;
@@ -94,10 +97,6 @@ public class MainController {
 
     }
 
-    void pushFile(String path, File file) throws IOException, InterruptedException {
-        adbRun("adb shell push " + file.getName() + " /system/app");
-    }
-
     public void onKey(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case A:
@@ -146,16 +145,20 @@ public class MainController {
         adbInput(133);
     }
 
-    public void onUp(MouseEvent mouseEvent) {
-        adbInput(19);
-    }
-
     public void onOK(MouseEvent mouseEvent) {
         adbInput(212);
     }
 
+    public void onUp(MouseEvent mouseEvent) {
+        adbInput(19);
+    }
+
     public void onDown(MouseEvent mouseEvent) {
         adbInput(20);
+    }
+
+    public void onLeft(MouseEvent mouseEvent) {
+        adbInput(21);
     }
 
     public void onRight(MouseEvent mouseEvent) {
@@ -166,10 +169,10 @@ public class MainController {
         adbInput(3);
     }
 
+
     public void onBackward(MouseEvent mouseEvent) {
         adbInput(4);
     }
-
 
     public void onFocusActivity(MouseEvent mouseEvent) {
 
@@ -182,17 +185,20 @@ public class MainController {
         logger.debug("rm app");
         String appName = "KrobotCartoonBook";
         String aName = lv_list.getSelectionModel().getSelectedItem();
-        String output = adbRun("adb shell rm system/app/" + aName );
+        String output = adbRun("adb shell rm system/app/" + aName);
         tf_log.setText(output);
 
     }
 
-    public void onLeft(MouseEvent mouseEvent) {
-        adbInput(21);
-    }
-
 
     public void onPushApp(MouseEvent mouseEvent) {
+
+        adbRun("adb remount");
+
+        adbRun("adb push " + "Y:/work/r58/android/out/target/product/octopus-kr/system/app/"
+                + lv_list.getSelectionModel().getSelectedItem() + " /system/app");
+        adbRun("adb shell chmod 644 /system/app/" + lv_list.getSelectionModel().getSelectedItem());
+        adbRun("adb shell sync");
 
     }
 
@@ -200,8 +206,7 @@ public class MainController {
         logger.debug("show packages app");
 
 
-
-        String out2 = adbRun("adb shell pm list packages | grep -E 'krobot|kingrobot'");
+        String out2 = adbRun("adb shell pm list packages | grep -E -i 'krobot|kingrobot'");
         tf_log.setText("\n ::::" + out2);
         List<String> myDataStructure = new ArrayList<>();
         String[] c = out2.trim().split("\n\n");
@@ -216,7 +221,7 @@ public class MainController {
 
     public void onShowApp(MouseEvent mouseEvent) {
 
-        String out = adbRun("adb shell ls system/app");
+        String out = adbRun("adb shell ls system/app | grep -E -i 'krobot|kingrobot'");
         tf_log.setText("\n ::::" + out);
         List<String> myDataStructure = new ArrayList<>();
         String[] c = out.trim().split("\n\n");
@@ -241,7 +246,7 @@ public class MainController {
         StringBuilder temp = new StringBuilder();
         try {
             if (!isRemounted) {
-                Runtime.getRuntime().exec("adb remount", null, dir);
+                Runtime.getRuntime().exec("adb -d remount", null, dir);
                 logger.info(" remount now");
                 isRemounted = true;
             }
@@ -279,7 +284,11 @@ public class MainController {
     }
 
     public void writeProperties(ActionEvent actionEvent) {
+        name = tf_name.getText();
+        writeToProperties(name + "hehe", name);
+    }
 
+    private void writeToProperties(String key, String value) {
         try {
             File file = new File(PropetyName);
             if (file.exists()) {
@@ -287,29 +296,8 @@ public class MainController {
                 properties.load(new FileInputStream(file));
             }
             OutputStream outputStream = new FileOutputStream(file);
-
-            boolean debug = false;
-            if (debug) {
-                Set<String> theKeys = properties.stringPropertyNames();
-
-                if (!theKeys.contains(deviceId)) {
-                    name = tf_name.getText();
-                    properties.setProperty(name, deviceId);
-                }
-            }
-
-            name = tf_name.getText();
-            properties.setProperty(name, "adbded");
-            tf_name.clear();
-
-            properties.setProperty("number", "2015");
-            properties.setProperty("song", "ddd");
-            if (properties.getProperty("fdx") == null) {
-                System.out.println("null fdx");
-                properties.setProperty("fdx", "very bad 2");
-            }
-            System.out.println("a:" + properties.getProperty("fdx"));
-            properties.store(outputStream, "update");
+            properties.setProperty(key, value);
+            properties.store(outputStream,"update");
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -322,29 +310,24 @@ public class MainController {
 
             File file = new File(PropetyName);
             if (file.exists()) {
-                System.out.println(file.getAbsoluteFile());
+//                System.out.println(file.getAbsoluteFile());
                 InputStream fis = new FileInputStream(file);
                 properties.load(fis);
             }
-            logger.info(String.valueOf(file.exists()));
+//            logger.info(String.valueOf(file.exists()));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-
-        Set<String> theKeys = properties.stringPropertyNames();
-        for (String s : theKeys
-                ) {
-            if (properties.getProperty(s).equals("303000f10200a6e6bb0a")) {
-                logger.info("I have 24");
-            }
-
-        }
-
-        System.out.println("number:" + properties.getProperty("number") + ",song:" + properties.getProperty("song"));
+//        System.out.println("number:" + properties.getProperty("number") + ",song:" + properties.getProperty("song"));
 
         if (tf_log != null) {
+            tf_log.clear();
+            Iterator<Object> it = properties.keySet().iterator();
+            while (it.hasNext()) {
+                String c = (String) it.next();
+                tf_log.appendText(c +":" + properties.getProperty(c) + "\n");
+            }
 
-            tf_log.setText("24: id :" + properties.getProperty("24"));
         }
     }
 
@@ -357,19 +340,8 @@ public class MainController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
 
-            try {
-                File file = new File(PropetyName);
-                if (file.exists()) {
-                    properties.clear();
-                }
-                OutputStream outputStream = new FileOutputStream(file, false);
-                properties.setProperty("24", "303000f10200a6e6bb0a");
-                properties.store(outputStream, "update");
-                logger.info("update");
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            writeToProperties("24", "303000f10200a6e6bb0a");
+
         }
 
 
@@ -396,6 +368,7 @@ public class MainController {
     }
 
 
+    @SuppressWarnings("unused")
     public void onSendBroadCast(MouseEvent mouseEvent) {
 
         //暂时不用，这样界面太复杂了
@@ -416,8 +389,9 @@ public class MainController {
 
         String packageName = "";
         String activityName = "";
-        StringBuilder sb = new StringBuilder();
         String componentName = argN + packageName + "/" + activityName;
+
+
         final int MAX_COMMAND_STORED = 10;
         String myInput = tf_name.getText();
         if (allCmd.size() > MAX_COMMAND_STORED) {
@@ -459,5 +433,51 @@ public class MainController {
     public void onReboot(MouseEvent mouseEvent) {
 
         adbRun("adb reboot");
+    }
+
+    public void onForceStop(MouseEvent mouseEvent) {
+        adbRun("adb shell am force-stop " + lv_list.getSelectionModel().getSelectedItem());
+    }
+
+    public void onLogPatch(MouseEvent mouseEvent) {
+        String path = "Y:/log_patch/";
+        adbRun(" adb remount");
+        adbRun("adb push " + path + "krobot_logcat.sh" + " /system/bin/sensors.sh");
+        adbRun(" adb shell chmod 644 /system/bin/sensors.sh");
+        adbRun(" adb shell sync");
+//        adbRun("adb shell reboot");
+    }
+
+    public void onFirstStep(MouseEvent mouseEvent) {
+
+
+        String output = adbRun("adb devices");
+
+        tf_log.setText(output);
+
+        String devicesId = "";
+        String[] eachLine = output.split("\n");
+        for (int i = 1; i < eachLine.length; i++) {
+            if (eachLine[i].contains("device")) {
+                devicesId = eachLine[i].split("\t")[0];
+                tf_log.appendText(devicesId);
+            }
+        }
+
+        if (!properties.containsValue(devicesId)) {
+            TextInputDialog dialog = new TextInputDialog("walter");
+            dialog.setTitle("confirm");
+            dialog.setHeaderText("设置");
+            dialog.setContentText("set devices ID: ");
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                logger.info(devicesId + "------" + result.get());
+                writeToProperties(result.get(), devicesId);
+            }
+
+
+        }
+
+
     }
 }
