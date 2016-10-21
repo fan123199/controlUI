@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="root_layout" onKeyPressed="#onKey" prefHeight="677.0" prefWidth="1157.0" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
+<BorderPane fx:id="root_layout" onKeyPressed="#onKey" prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <top>
       <MenuBar prefHeight="0.0" prefWidth="1163.0" BorderPane.alignment="CENTER">
         <menus>
@@ -67,7 +67,7 @@
                   <Button fx:id="btn_home" layoutX="61.0" layoutY="148.0" mnemonicParsing="false" onMouseClicked="#onHome" prefHeight="34.0" prefWidth="53.0" text="Home" />
                </children>
             </Pane>
-            <Button fx:id="btn_push_log" layoutX="67.0" layoutY="187.0" mnemonicParsing="false" onMouseClicked="#onPushLog" text="pull log" />
+            <Button fx:id="btn_push_log" layoutX="67.0" layoutY="187.0" mnemonicParsing="false" onMouseClicked="#onPullLog" text="pull log" />
             <ChoiceBox layoutX="337.0" layoutY="209.0" prefWidth="150.0" />
             <ChoiceBox layoutX="307.0" layoutY="170.0" prefWidth="150.0" />
             <ChoiceBox layoutX="307.0" layoutY="129.0" prefWidth="150.0" />
@@ -108,9 +108,9 @@
             <Button fx:id="btn_uninstall" layoutX="571.0" layoutY="263.0" mnemonicParsing="false" onMouseClicked="#onRemove" text="uninstall app" />
             <ChoiceBox layoutX="929.0" layoutY="49.0" prefWidth="150.0" />
             <Button layoutX="572.0" layoutY="229.0" mnemonicParsing="false" onMouseClicked="#onShowPackages" prefHeight="34.0" prefWidth="158.0" text="show packages" />
-            <Button fx:id="btn_system_app1" graphicTextGap="0.0" layoutX="973.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#onReboot" prefHeight="102.0" prefWidth="153.0" text="REBOOT">
+            <Button fx:id="btn_system_app1" graphicTextGap="0.0" layoutX="944.0" layoutY="148.0" mnemonicParsing="false" onMouseClicked="#onReboot" prefHeight="102.0" prefWidth="173.0" text="REBOOT">
                <font>
-                  <Font size="35.0" />
+                  <Font size="30.0" />
                </font></Button>
            </AnchorPane>
        </SplitPane>

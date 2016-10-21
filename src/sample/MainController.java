@@ -16,13 +16,12 @@ import org.slf4j.LoggerFactory;
 import utils.DateUtils;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
-
-import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
 
 @SuppressWarnings("UnusedParameters")
 public class MainController {
-    private final String PropetyName = "devicesname.properties";
+    private final String propertyName = "devicesname.properties";
     public Button btn_wifi;
     public Button btn_head;
     public TextArea tf_log;
@@ -37,7 +36,7 @@ public class MainController {
 
     private Properties properties = new Properties();
     private String deviceId;
-    private String name;
+    private String deviceName;
     private List<String> allCmd = new ArrayList<>();
 
     boolean isRemounted = false;
@@ -51,6 +50,9 @@ public class MainController {
         readProperties(null);
         BufferedReader reader = null;
         try {
+            if (new File("history.data").exists()) {
+                new File("history.data").createNewFile();
+            }
             reader = new BufferedReader(new FileReader("history.data"));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -183,7 +185,7 @@ public class MainController {
 
     public void onRemove(MouseEvent mouseEvent) {
         logger.debug("rm app");
-        String appName = "KrobotCartoonBook";
+//        String appName = "KrobotCartoonBook";
         String aName = lv_list.getSelectionModel().getSelectedItem();
         String output = adbRun("adb shell rm system/app/" + aName);
         tf_log.setText(output);
@@ -237,7 +239,7 @@ public class MainController {
         return adbRun(command, null);
     }
 
-    public String adbRun(String command, File dir) {
+    private String adbRun(String command, File dir) {
         if (devicesNum > 1 && !command.contains("-d")) {
             command = command.replace("adb", "adb -d");
         }
@@ -271,33 +273,43 @@ public class MainController {
     }
 
 
-    public void onPushLog(MouseEvent mouseEvent) {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void onPullLog(MouseEvent mouseEvent) {
         String date = DateUtils.dateStump();
+
+        //not neccess
         File dir = new File("C://Users//fdx//Desktop//logcat", date);
         if (!dir.exists()) {
-            boolean a = dir.mkdirs();
-            boolean b = dir.setExecutable(true);
+            dir.mkdirs();
+            dir.setExecutable(true);
         }
 
-        adbRun("adb pull data/krobot/logcat", dir);
+        if (adbRun("adb shell ls data/krobot/logcat").contains("No such file or directory")) {
+            tf_log.setText("No such file or directory ,Push patch to xiaoyi,  Please Reboot");
+            onLogPatch(mouseEvent);
+            return;
+        }
+
+        adbRun("adb pull data/krobot/logcat C:/Users/fdx/Desktop/logcat/" + date + File.separator + deviceName);
+//        adbRun("adb pull data/krobot/logcat/",dir);
 
     }
 
     public void writeProperties(ActionEvent actionEvent) {
-        name = tf_name.getText();
-        writeToProperties(name + "hehe", name);
+//        name = tf_name.getText();
+//        writeToProperties(name + "hehe", name);
     }
 
     private void writeToProperties(String key, String value) {
         try {
-            File file = new File(PropetyName);
+            File file = new File(propertyName);
             if (file.exists()) {
                 properties.clear();
                 properties.load(new FileInputStream(file));
             }
             OutputStream outputStream = new FileOutputStream(file);
             properties.setProperty(key, value);
-            properties.store(outputStream,"update");
+            properties.store(outputStream, "update");
             outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -308,12 +320,12 @@ public class MainController {
 
         try {
 
-            File file = new File(PropetyName);
-            if (file.exists()) {
+            File file = new File(propertyName);
+            file.createNewFile();
 //                System.out.println(file.getAbsoluteFile());
-                InputStream fis = new FileInputStream(file);
-                properties.load(fis);
-            }
+            InputStream fis = new FileInputStream(file);
+            properties.load(fis);
+
 //            logger.info(String.valueOf(file.exists()));
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -322,12 +334,10 @@ public class MainController {
 
         if (tf_log != null) {
             tf_log.clear();
-            Iterator<Object> it = properties.keySet().iterator();
-            while (it.hasNext()) {
-                String c = (String) it.next();
-                tf_log.appendText(c +":" + properties.getProperty(c) + "\n");
+            for (Object o : properties.keySet()) {
+                String c = (String) o;
+                tf_log.appendText(c + ":" + properties.getProperty(c) + "\n");
             }
-
         }
     }
 
@@ -361,10 +371,8 @@ public class MainController {
     }
 
     public void onTest(MouseEvent actionEvent) {
-        String whatIChoose = lv_list.getSelectionModel().getSelectedItem();
-        int whatIChooseIndex = lv_list.getSelectionModel().getSelectedIndex();
+//        String whatIChoose = lv_list.getSelectionModel().getSelectedItem();
 
-        logger.info(",,,,,whatIchoose: " + whatIChoose);
     }
 
 
@@ -440,42 +448,51 @@ public class MainController {
     }
 
     public void onLogPatch(MouseEvent mouseEvent) {
-        String path = "Y:/log_patch/";
-        adbRun(" adb remount");
-        adbRun("adb push " + path + "krobot_logcat.sh" + " /system/bin/sensors.sh");
+        //pack to jar
+//        String path = "Y:/log_patch/";
+
+    adbRun("adb remount");
+        adbRun("adb push krobot_logcat.sh" + " /system/bin/sensors.sh");
         adbRun(" adb shell chmod 644 /system/bin/sensors.sh");
         adbRun(" adb shell sync");
 //        adbRun("adb shell reboot");
     }
 
     public void onFirstStep(MouseEvent mouseEvent) {
-
-
         String output = adbRun("adb devices");
 
-        tf_log.setText(output);
+//        tf_log.setText(output);
 
-        String devicesId = "";
+        String tempID = "";
         String[] eachLine = output.split("\n");
         for (int i = 1; i < eachLine.length; i++) {
             if (eachLine[i].contains("device")) {
-                devicesId = eachLine[i].split("\t")[0];
-                tf_log.appendText(devicesId);
+                tempID = eachLine[i].split("\t")[0];
+//                tf_log.appendText(tempID);
             }
         }
 
-        if (!properties.containsValue(devicesId)) {
+        deviceId = tempID;
+
+        if (!properties.containsValue(tempID)) {
             TextInputDialog dialog = new TextInputDialog("walter");
             dialog.setTitle("confirm");
             dialog.setHeaderText("设置");
             dialog.setContentText("set devices ID: ");
             Optional<String> result = dialog.showAndWait();
             if (result.isPresent()) {
-                logger.info(devicesId + "------" + result.get());
-                writeToProperties(result.get(), devicesId);
+                logger.info(tempID + "------" + result.get());
+                writeToProperties(result.get(), tempID);
+                deviceName = result.get();
             }
-
-
+        } else {
+            for (Object key:properties.keySet()
+                 ) {
+                if (tempID.equals(properties.get(key))) {
+                    tf_log.appendText("\nkey: " + key + ", ID: " +  tempID);
+                    deviceName = (String) key;
+                }
+            }
         }
 
 
