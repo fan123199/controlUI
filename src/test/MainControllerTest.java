@@ -1,5 +1,8 @@
 package test;
 
+import javafx.event.Event;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import org.junit.Test;
 import sample.MainController;
 
@@ -15,6 +18,12 @@ public class MainControllerTest {
     public void adbRun() throws Exception {
 
 
+    }
+
+    @Test
+    public void onPullLog() throws Exception {
+        String userPath = System.getProperty("user.home");
+        System.out.print(userPath);
     }
 
 

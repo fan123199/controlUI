@@ -309,12 +309,14 @@ public class MainController {
     public void onPullLog(MouseEvent mouseEvent) {
         String date = DateUtils.dateStump();
 
-        //not neccess
-        File dir = new File("C://Users//fdx//Desktop//logcat", date);
-        if (!dir.exists()) {
-            dir.mkdirs();
-            dir.setExecutable(true);
-        }
+
+
+        //not necessary, plan B
+//        File dir = new File("C://Users//fdx//Desktop//logcat", date);
+//        if (!dir.exists()) {
+//            dir.mkdirs();
+//            dir.setExecutable(true);
+//        }
 
         if (adbRun("adb shell ls data/krobot/logcat").contains("No such file or directory")) {
             tf_log.setText("no Log there, please push patch to xiaoyi");
@@ -322,7 +324,7 @@ public class MainController {
             return;
         }
 
-        adbRun("adb pull data/krobot/logcat C:/Users/fdx/Desktop/logcat/" + date + File.separator + deviceName);
+        adbRun("adb pull data/krobot/logcat "+ System.getProperty("home")+ "/Desktop/logcat/" + date + File.separator + deviceName);
 //        adbRun("adb pull data/krobot/logcat/",dir);
 
     }
