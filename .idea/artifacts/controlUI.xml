@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" build-on-make="true" name="controlUI">
+  <artifact type="javafx" name="controlUI">
     <output-path>$PROJECT_DIR$/out/artifacts/controlUI</output-path>
     <properties id="javafx-properties">
       <options>

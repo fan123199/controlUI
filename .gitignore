@@ -1,3 +1,4 @@
 out
-*.properties
-*.data
+/*.properties
+/krobot_logcat.sh
+/history.txt

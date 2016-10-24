@@ -1,7 +1,7 @@
 package sample;
 
-import Model.BroadCast;
-import Model.MySettings;
+import model.BroadCast;
+import model.MySettings;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +15,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.util.List;
-import java.util.Properties;
 
 public class Main extends Application {
 

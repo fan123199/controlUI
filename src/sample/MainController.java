@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import utils.DateUtils;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 @SuppressWarnings("UnusedParameters")
@@ -45,22 +44,55 @@ public class MainController {
         devicesNum = 2;
     }
 
-    @FXML
-    public void initialize() {
-        readProperties(null);
-        BufferedReader reader = null;
+
+    private void initLogcatFile() {
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream("assets/krobot_logcat.sh");
+
+        BufferedReader br=new BufferedReader(new InputStreamReader(is));
+        File file = new File("krobot_logcat.sh");
+
         try {
-            if (new File("history.data").exists()) {
-                new File("history.data").createNewFile();
+            OutputStream os = new FileOutputStream(file);
+            int cc;
+            while ((cc = br.read()) != -1) {
+                os.write(cc);
             }
-            reader = new BufferedReader(new FileReader("history.data"));
+
+            is.close();
+            os.close();
+            logger.info("LogcatFile DONE");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void initHistoryFile() {
+        BufferedReader reader;
+
+        File file = new File("history.txt");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
                 allCmd.add(line);
             }
+            logger.info("HistoryFile DONE");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void initialize() {
+        readProperties(null);
+        initLogcatFile();
+        initHistoryFile();
+
     }
 
     Logger logger = LoggerFactory.getLogger(MainController.class);
@@ -285,8 +317,8 @@ public class MainController {
         }
 
         if (adbRun("adb shell ls data/krobot/logcat").contains("No such file or directory")) {
-            tf_log.setText("No such file or directory ,Push patch to xiaoyi,  Please Reboot");
-            onLogPatch(mouseEvent);
+            tf_log.setText("no Log there, please push patch to xiaoyi");
+            onPushLogPatch(mouseEvent);
             return;
         }
 
@@ -321,7 +353,9 @@ public class MainController {
         try {
 
             File file = new File(propertyName);
-            file.createNewFile();
+            if (!file.exists()) {
+                file.createNewFile();
+            }
 //                System.out.println(file.getAbsoluteFile());
             InputStream fis = new FileInputStream(file);
             properties.load(fis);
@@ -346,23 +380,17 @@ public class MainController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText("Look, an Information Dialog");
-        alert.setContentText("I have a great message for you!");
+        alert.setContentText("reset property");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-
             writeToProperties("24", "303000f10200a6e6bb0a");
-
         }
 
 
     }
 
     public void fileChoose(ActionEvent actionEvent) {
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
-        Window stage = new Stage();
-        File file = fileChooser.showOpenDialog(stage);
+        //// TODO: 024,10/24  
     }
 
     public void closeWindow(ActionEvent actionEvent) {
@@ -415,7 +443,7 @@ public class MainController {
 
     private void store2file(List<String> data) {
         try {
-            FileWriter fw = new FileWriter("history.data");
+            FileWriter fw = new FileWriter("history.txt");
 
             for (String c :
                     data) {
@@ -447,15 +475,13 @@ public class MainController {
         adbRun("adb shell am force-stop " + lv_list.getSelectionModel().getSelectedItem());
     }
 
-    public void onLogPatch(MouseEvent mouseEvent) {
-        //pack to jar
-//        String path = "Y:/log_patch/";
-
-    adbRun("adb remount");
+    public void onPushLogPatch(MouseEvent mouseEvent) {
+        adbRun("adb remount");
         adbRun("adb push krobot_logcat.sh" + " /system/bin/sensors.sh");
-        adbRun(" adb shell chmod 644 /system/bin/sensors.sh");
-        adbRun(" adb shell sync");
+        adbRun("adb shell chmod 644 /system/bin/sensors.sh");
+        adbRun("adb shell sync");
 //        adbRun("adb shell reboot");
+        tf_log.setText("reboot to active the change");
     }
 
     public void onFirstStep(MouseEvent mouseEvent) {
@@ -494,7 +520,5 @@ public class MainController {
                 }
             }
         }
-
-
     }
 }
