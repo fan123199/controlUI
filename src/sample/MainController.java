@@ -15,6 +15,7 @@ import utils.DateUtils;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.RunnableFuture;
 
 import static com.sun.jmx.snmp.ThreadContext.contains;
 
@@ -51,7 +52,7 @@ public class MainController {
     private void initLogcatFile() {
         InputStream is = this.getClass().getClassLoader().getResourceAsStream("assets/krobot_logcat.sh");
 
-        BufferedReader br=new BufferedReader(new InputStreamReader(is));
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
         File file = new File("krobot_logcat.sh");
 
         try {
@@ -92,10 +93,27 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        readProperties(null);
-        initLogcatFile();
-        initHistoryFile();
 
+        new Thread(() -> {
+            readProperties(null);
+            initLogcatFile();
+            initHistoryFile();
+            initAppsList();
+        }).start();
+
+
+    }
+
+    private void initAppsList() {
+        final String path = "Y:/work/r58/android/out/target/product/octopus-kr/system/app/";
+        //old ways,it is not robust
+        String apkName = lv_list.getSelectionModel().getSelectedItem();
+        File path2 = new File(path);
+        String[] apkNames2 = path2.list((dir, name) -> name.contains("Krobot"));
+
+        ObservableList<String> strings = FXCollections.observableArrayList(Arrays.asList(apkNames2 != null ? apkNames2 : new String[0]));
+
+        lv_list.setItems(strings);
     }
 
     private void adbInput(int keyCode) {
@@ -258,7 +276,6 @@ public class MainController {
             InputStream is = p.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line;
-
             while ((line = reader.readLine()) != null) {
                 temp.append(line).append("\n");
                 System.out.println(line);
@@ -420,7 +437,6 @@ public class MainController {
     }
 
     public void onRemoveLog(MouseEvent mouseEvent) {
-        adbRun("adb shell rm -r /data/krobot/logcat");
     }
 
     public void onPushLogPatch(MouseEvent mouseEvent) {
@@ -441,25 +457,25 @@ public class MainController {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void onPullLog(MouseEvent mouseEvent) {
-        String date = DateUtils.dateStump();
 
-//        IS necessary, plan B
-        File dir = new File(System.getProperty("user.home").replace("\\","/")+"/Desktop/logcat/"+ date);
+        String date = DateUtils.dateStump();
+        File dir = new File(System.getProperty("user.home").replace("\\", "/") + "/Desktop/logcat/" + date);
         if (!dir.exists()) {
             dir.mkdirs();
             dir.setExecutable(true);
         }
 
-        String logcatlist = adbRun("adb shell ls data/krobot/logcat");
-        tf_log.setText(logcatlist);
-        if (logcatlist.contains("No such file or directory")) {
+        String logcatList = adbRun("adb shell ls data/krobot/logcat");
+        tf_log.setText(logcatList);
+        if (logcatList.contains("No such file or directory")) {
             tf_log.setText("no Log there, please push patch to xiaoyi");
             return;
         }
 
-        adbRun("adb pull data/krobot/logcat "+ System.getProperty("user.home").replace("\\","/")+ "/Desktop/logcat/" + date + "/" + deviceID);
-//        adbRun("adb pull data/krobot/logcat/",dir);
-
+        adbRun("adb pull data/krobot/logcat " + System.getProperty("user.home").replace("\\", "/")
+                + "/Desktop/logcat/" + date + "/" + deviceID);
+        adbRun("adb shell rm -r /data/krobot/logcat");
+        tf_log.appendText("pull and remove log done");
     }
 
     public void onFirstStep(MouseEvent mouseEvent) {
@@ -468,7 +484,7 @@ public class MainController {
 
 //        tf_log.setText(output);
 
-        if (output.indexOf("device",10)== -1) {
+        if (output.indexOf("device", 10) == -1) {
             tf_log.setText("no devices");
             return;
         }
@@ -493,13 +509,29 @@ public class MainController {
                 deviceID = result.get();
             }
         }
-        for (Object key:properties.keySet()
-             ) {
+        for (Object key : properties.keySet()
+                ) {
             if (tempID.equals(properties.get(key))) {
-                tf_log.appendText("\nkey: " + key + ", ID: " +  tempID);
+                tf_log.setText("\nkey: " + key + ", ID: " + tempID);
                 deviceID = (String) key;
             }
         }
+
+    }
+
+    public void onStartActivity(MouseEvent mouseEvent) {
+
+        final int MAX_COMMAND_STORED = 10;
+        String myInput = tf_name.getText();
+        if (allCmd.size() > MAX_COMMAND_STORED) {
+            allCmd.remove(MAX_COMMAND_STORED);
+        }
+        if (allCmd.size() == 0 || !myInput.equals(allCmd.get(0))) {
+            allCmd.add(0, myInput);
+        }
+        adbRun("adb shell am start " + myInput);
+
+        store2file(allCmd);
 
     }
 }
