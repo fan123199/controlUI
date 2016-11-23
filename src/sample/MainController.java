@@ -15,9 +15,6 @@ import utils.DateUtils;
 
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.RunnableFuture;
-
-import static com.sun.jmx.snmp.ThreadContext.contains;
 
 @SuppressWarnings({"UnusedParameters", "ResultOfMethodCallIgnored"})
 public class MainController {
@@ -40,9 +37,8 @@ public class MainController {
 
     private List<String> allCmd = new ArrayList<>();
 
-    private boolean isRemounted = false;
-
     private Logger logger = LoggerFactory.getLogger(MainController.class);
+
 
     public MainController() {
         devicesNum = 2;
@@ -107,11 +103,14 @@ public class MainController {
     private void initAppsList() {
         final String path = "Y:/work/r58/android/out/target/product/octopus-kr/system/app/";
         //old ways,it is not robust
-        String apkName = lv_list.getSelectionModel().getSelectedItem();
+//        String apkName = lv_list.getSelectionModel().getSelectedItem();
         File path2 = new File(path);
         String[] apkNames2 = path2.list((dir, name) -> name.contains("Krobot"));
+        List<String> col = Arrays.asList(apkNames2);
+        Collections.sort(col);
 
-        ObservableList<String> strings = FXCollections.observableArrayList(Arrays.asList(apkNames2 != null ? apkNames2 : new String[0]));
+        ObservableList<String> strings = FXCollections.observableArrayList(col)
+                ;
 
         lv_list.setItems(strings);
     }
@@ -211,10 +210,12 @@ public class MainController {
 
     public void onRemove(MouseEvent mouseEvent) {
         logger.debug("rm app");
-//        String appName = "KrobotCartoonBook";
-        String aName = lv_list.getSelectionModel().getSelectedItem();
-        String output = adbRun("adb shell rm system/app/" + aName);
+
+        adbRun("adb remount");
+        String appName = lv_list.getSelectionModel().getSelectedItem();
+        String output = adbRun("adb shell rm system/app/" + appName);
         tf_log.setText(output);
+        tf_log.appendText("Succeed , reboot it");
 
     }
 
@@ -359,11 +360,6 @@ public class MainController {
         stage.close();
     }
 
-    public void onTest(MouseEvent actionEvent) {
-//        String whatIChoose = lv_list.getSelectionModel().getSelectedItem();
-
-    }
-
     @SuppressWarnings("unused")
     public void onSendBroadCast(MouseEvent mouseEvent) {
 
@@ -459,7 +455,11 @@ public class MainController {
     public void onPullLog(MouseEvent mouseEvent) {
 
         String date = DateUtils.dateStump();
-        File dir = new File(System.getProperty("user.home").replace("\\", "/") + "/Desktop/logcat/" + date);
+        String path = System.getProperty("user.home").replace("\\", "/") + "/Desktop/logcat/" + date;
+
+        // TODO: 011,11/11 custom location for generic
+        String pathShare = "X:/fdx/logcat/" + date;
+        File dir = new File(pathShare);
         if (!dir.exists()) {
             dir.mkdirs();
             dir.setExecutable(true);
@@ -472,8 +472,7 @@ public class MainController {
             return;
         }
 
-        adbRun("adb pull data/krobot/logcat " + System.getProperty("user.home").replace("\\", "/")
-                + "/Desktop/logcat/" + date + "/" + deviceID);
+        adbRun("adb pull data/krobot/logcat " + pathShare + "/" + deviceID);
         adbRun("adb shell rm -r /data/krobot/logcat");
         tf_log.appendText("pull and remove log done");
     }
